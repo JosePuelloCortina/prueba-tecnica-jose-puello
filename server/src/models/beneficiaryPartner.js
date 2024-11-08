@@ -12,11 +12,11 @@ module.exports = (sequelize) => {
             type: DataTypes.UUID,
             allowNull: false
         },
-        name: {
+        name_beneficiary: {
             type: DataTypes.STRING,
             allowNull: false
         },
-        id_number: {
+        id_number_beneficiary: {
             type: DataTypes.STRING,
             unique: true,
             allowNull: false

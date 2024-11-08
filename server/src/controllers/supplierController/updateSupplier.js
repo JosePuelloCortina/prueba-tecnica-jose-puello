@@ -1,13 +1,13 @@
-const { Supplier, BankingData, User } = require('../../db');
+const { Supplier, BankingData, User, BeneficiaryPartner } = require('../../db');
 const Sequelize = require('sequelize');
 const validateRequiredFields = require('../../utils/validateRequiredFields');
 
 const updateSupplier = async (req, res) => {
     try {
         const { supplierId } = req.params;  
-        const { nit, name, lastname, id_number, supplier_type, person_type, state, validated_by, bank, account_number, account_type } = req.body;
+        const { nit, name, lastname, id_number, supplier_type, person_type, state, validated_by, bank, account_number, account_type, name_beneficiary, id_number_beneficiary } = req.body;
 
-        const errorMessage = validateRequiredFields(req.body, ['nit', 'name', 'lastname', 'id_number', 'supplier_type', 'person_type', 'validated_by', 'bank', 'account_number', 'account_type']);
+        const errorMessage = validateRequiredFields(req.body, ['nit', 'name', 'lastname', 'id_number', 'supplier_type', 'person_type', 'validated_by', 'bank', 'account_number', 'account_type', 'name_beneficiary', 'id_number_beneficiary']);
         if (errorMessage) {
             return res.status(400).json({ error: `Error updating supplier: Bad request, ${errorMessage}` });
         }
@@ -71,13 +71,25 @@ const updateSupplier = async (req, res) => {
             return res.status(404).json({ error: "Banking data not found for this supplier" });
         }
 
+        const existingBeneficiaryPartne = await BeneficiaryPartner.findOne({
+            where: { supplier_id: supplierId}
+        })
+
+        if (!existingBeneficiaryPartne) {
+            return res.status(404).json({ error: "Beneficiary Partner not found for this supplier" });
+        }
+
         const updatedBankingData = await existingBankingData.update({
             bank,
             account_number,
             account_type
         });
 
-        return res.status(200).json({ supplier: updatedSupplier, bankingData: updatedBankingData });
+        const updateBeneficiaryPartner = await existingBeneficiaryPartne.update({
+            name_beneficiary,
+            id_number_beneficiary
+        })
+        return res.status(200).json({ supplier: updatedSupplier, bankingData: updatedBankingData, beneficiaryPartner: updateBeneficiaryPartner });
         
     } catch (error) {
         console.error(error);

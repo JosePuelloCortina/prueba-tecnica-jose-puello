@@ -4,6 +4,7 @@ const updateSupplier = require('../../controllers/supplierController/updateSuppl
 const getSupplierById = require('../../controllers/supplierController/getSupplierById');
 const deleteSupplierById = require('../../controllers/supplierController/deleteSupplierById');
 const updateSupplierState = require('../../controllers/supplierController/updateSupplierState');
+const getSuppliersList = require('../../controllers/supplierController/getSupplierList')
 
 const router = Router();
 
@@ -12,5 +13,6 @@ router.put('/actulizar-informacion-proveedor/:supplierId', updateSupplier);
 router.get('/obtener-informacion-proveedor-por-id/:supplierId', getSupplierById);
 router.delete('/eliminar-proveedor-por-id/:supplierId', deleteSupplierById);
 router.put('/actualizar-estado/:supplierId', updateSupplierState);
+router.get('/lista-de-proveedores', getSuppliersList)
 
 module.exports = router; 

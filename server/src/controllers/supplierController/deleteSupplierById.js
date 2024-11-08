@@ -1,4 +1,4 @@
-const { Supplier, BankingData } = require('../../db');
+const { Supplier, BankingData, BeneficiaryPartner } = require('../../db');
 
 const deleteSupplierById = async (req, res) => {
     try {
@@ -7,7 +7,7 @@ const deleteSupplierById = async (req, res) => {
         const supplier = await Supplier.findOne({
             where: { id: supplierId },
             include: {
-                model: BankingData, 
+                model: BankingData, BeneficiaryPartner,
                 required: false, 
             }
         });

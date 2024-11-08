@@ -1,4 +1,4 @@
-const { Supplier, BankingData } = require('../../db');
+const { Supplier, BankingData, BeneficiaryPartner } = require('../../db');
 
 const getSupplierById = async (req, res) => {
     try {
@@ -6,7 +6,10 @@ const getSupplierById = async (req, res) => {
 
         const supplier = await Supplier.findOne({
             where: { id: supplierId },
-            include: [{ model: BankingData }] 
+            include: [
+                { model: BankingData },
+                { model: BeneficiaryPartner }
+            ] 
         });
 
         if (!supplier) {

@@ -1,12 +1,12 @@
-const { Supplier, BankingData, User } = require('../../db');
+const { Supplier, BankingData, User, BeneficiaryPartner } = require('../../db');
 const Sequelize = require('sequelize');
 const validateRequiredFields = require('../../utils/validateRequiredFields');
 
 const createSupplier = async (req, res) => {
     try {
-        const { nit, name, lastname, id_number, supplier_type, person_type, state, validated_by, bank, account_number, account_type } = req.body;
+        const { nit, name, lastname, id_number, supplier_type, person_type, state, validated_by, bank, account_number, account_type, name_beneficiary, id_number_beneficiary } = req.body;
 
-        const errorMessage = validateRequiredFields(req.body, ['nit', 'name', 'lastname', 'id_number', 'supplier_type', 'person_type', 'validated_by', 'bank', 'account_number', 'account_type']);
+        const errorMessage = validateRequiredFields(req.body, ['nit', 'name', 'lastname', 'id_number', 'supplier_type', 'person_type', 'validated_by', 'bank', 'account_number', 'account_type', 'name_beneficiary', 'id_number_beneficiary' ]);
         if (errorMessage) {
             return res.status(400).json({ error: `Error creating supplier: Bad request, ${errorMessage}` });
         }
@@ -56,7 +56,14 @@ const createSupplier = async (req, res) => {
         };
         const createdBankingData = await BankingData.create(newBankingData);
 
-        return res.status(201).json({ supplier: createdSupplier, bankingData: createdBankingData });
+        const newBeneficiaryPartner = {
+            supplier_id: createdSupplier.id,
+            name_beneficiary,
+            id_number_beneficiary
+        }
+        const createdBeneficiaryPartner = await BeneficiaryPartner.create(newBeneficiaryPartner)
+
+        return res.status(201).json({ supplier: createdSupplier, bankingData: createdBankingData, beneficiaryPartner: createdBeneficiaryPartner });
         
     } catch (error) {
         console.error(error);
