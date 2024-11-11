@@ -1,4 +1,3 @@
-// App.js
 import { useState, useEffect } from 'react';
 import CreateSupplierForm from './components/CreateSupplierForm';
 import UpdateSupplierForm from './components/UpdateSupplierForm';
