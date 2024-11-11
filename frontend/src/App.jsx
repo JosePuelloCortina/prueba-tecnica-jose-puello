@@ -41,14 +41,14 @@ function App() {
   const handleDelete = async (id) => {
     try {
       await deleteSupplierById(id);
-      loadSuppliers(); // Recarga la lista después de eliminar
+      loadSuppliers(); 
     } catch (error) {
       console.error("Error deleting supplier:", error);
     }
   };
 
   const handleSave = async () => {
-    await loadSuppliers(); // Recarga la lista después de guardar
+    await loadSuppliers();
     setFormType(null);
     setSelectedSupplier(null);
   };
