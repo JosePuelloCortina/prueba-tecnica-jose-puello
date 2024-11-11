@@ -53,6 +53,7 @@ const UpdateSupplierForm = ({ existingSupplier, onSave }) => {
       };
 
       await updateSupplier(supplier.id, flattenedData);
+      alert("supplier updated")
       onSave();
     } catch (error) {
       console.error("Error updating supplier:", error);

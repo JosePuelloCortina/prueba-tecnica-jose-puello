@@ -15,10 +15,16 @@ const CreateSupplierForm = ({ onSave }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await createSupplier(supplier);
+      const response = await createSupplier(supplier);
+      alert(`proveedor creado: ${response.data.name}`, );
       onSave();
     } catch (error) {
       console.error("Error creating supplier:", error);
+      if (error.response && error.response.data && error.response.data.message) {
+          alert(error.response.data.message); 
+      } else {
+          alert("An error occurred while creating the supplier.");
+      }
     }
   };
 

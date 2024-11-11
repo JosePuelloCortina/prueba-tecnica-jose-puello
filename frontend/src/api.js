@@ -10,5 +10,6 @@ export const updateSupplier = (id, supplierData) => api.put(`/proveedor/actuliza
 export const deleteSupplierById = (id) => api.delete(`/proveedor/eliminar-proveedor-por-id/${id}`);
 export const updateSupplierState = (id, state) => api.put(`/proveedor/actualizar-estado/${id}`, state);
 export const getSuppliers = () => api.get('/proveedor/lista-de-proveedores');
+export const createUser = (userData) => api.post('/user/create-user', userData)
 
 export const getProjects = () => api.get('/projects/get-projects'); 
