@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { createSupplier } from '../api';
+import React, { useState, useEffect } from 'react';
+import { createSupplier, getUserList } from '../api';
 import './CreateSupplierForm.css';
 
 const CreateSupplierForm = ({ onSave }) => {
@@ -7,6 +7,19 @@ const CreateSupplierForm = ({ onSave }) => {
     nit: '', name: '', lastname: '', id_number: '', supplier_type: '', person_type: '',
     validated_by: '', bank: '', account_number: '', account_type: '', name_beneficiary: '', id_number_beneficiary: ''
   });
+  const [users, setUsers] = useState([]); 
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await getUserList();
+        setUsers(response.data);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+    fetchUsers();
+  }, []);
 
   const handleChange = (e) => {
     setSupplier({ ...supplier, [e.target.name]: e.target.value });
@@ -16,14 +29,14 @@ const CreateSupplierForm = ({ onSave }) => {
     e.preventDefault();
     try {
       const response = await createSupplier(supplier);
-      alert(`proveedor creado: ${response.data.name}`, );
-      onSave();
+      alert(`Proveedor creado: ${response.data.name}`); 
+      onSave(); 
     } catch (error) {
       console.error("Error creating supplier:", error);
       if (error.response && error.response.data && error.response.data.message) {
-          alert(error.response.data.message); 
+        alert(error.response.data.message);
       } else {
-          alert("An error occurred while creating the supplier.");
+        alert("An error occurred while creating the supplier.");
       }
     }
   };
@@ -47,7 +60,15 @@ const CreateSupplierForm = ({ onSave }) => {
         <option value="Juridica">Jurídica</option>
       </select>
 
-      <input type="text" name="validated_by" value={supplier.validated_by} onChange={handleChange} placeholder="Validated By" />
+      <select name="validated_by" value={supplier.validated_by} onChange={handleChange} required>
+        <option value="">Select Validator</option>
+        {users.map((user) => (
+          <option key={user.id} value={user.id}>
+            {user.email}
+          </option>
+        ))}
+      </select>
+
       <input type="text" name="bank" value={supplier.bank} onChange={handleChange} placeholder="Bank" required />
       <input type="text" name="account_number" value={supplier.account_number} onChange={handleChange} placeholder="Account Number" required />
       <input type="text" name="account_type" value={supplier.account_type} onChange={handleChange} placeholder="Account Type" required />

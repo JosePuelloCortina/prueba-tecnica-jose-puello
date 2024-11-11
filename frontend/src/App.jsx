@@ -1,9 +1,10 @@
+// App.js
 import { useState, useEffect } from 'react';
 import CreateSupplierForm from './components/CreateSupplierForm';
 import UpdateSupplierForm from './components/UpdateSupplierForm';
 import CreateUserForm from './components/CreateUserForm';
 import SupplierList from './components/SupplierList';
-import { getSuppliers } from './api';
+import { getSuppliers, deleteSupplierById } from './api';
 import './App.css';
 
 function App() {
@@ -38,8 +39,17 @@ function App() {
     setSelectedSupplier(supplier);
   };
 
+  const handleDelete = async (id) => {
+    try {
+      await deleteSupplierById(id);
+      loadSuppliers(); // Recarga la lista después de eliminar
+    } catch (error) {
+      console.error("Error deleting supplier:", error);
+    }
+  };
+
   const handleSave = async () => {
-    await loadSuppliers(); 
+    await loadSuppliers(); // Recarga la lista después de guardar
     setFormType(null);
     setSelectedSupplier(null);
   };
@@ -50,13 +60,12 @@ function App() {
 
       <button onClick={handleCreateSupplierClick}>Create Supplier</button>
       <button onClick={handleCreateUserClick}>Create User</button>
-      {selectedSupplier && <button onClick={() => handleUpdateClick(selectedSupplier)}>Update Supplier</button>}
 
       {formType === 'createSupplier' && <CreateSupplierForm onSave={handleSave} />}
       {formType === 'updateSupplier' && selectedSupplier && <UpdateSupplierForm existingSupplier={selectedSupplier} onSave={handleSave} />}
       {formType === 'createUser' && <CreateUserForm onSave={handleSave} />}
 
-      <SupplierList suppliers={suppliers} onEdit={(supplier) => handleUpdateClick(supplier)} />
+      <SupplierList suppliers={suppliers} onEdit={handleUpdateClick} onDelete={handleDelete} />
     </div>
   );
 }

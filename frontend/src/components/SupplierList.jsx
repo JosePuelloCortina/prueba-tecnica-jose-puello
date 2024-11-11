@@ -1,29 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { getSuppliers, deleteSupplierById } from '../api';
+import React from 'react';
+import { updateSupplierState } from '../api';
 import './SupplierList.css';
 
-const SupplierList = ({ onEdit }) => {
-  const [suppliers, setSuppliers] = useState([]);
-
-  useEffect(() => {
-    fetchSuppliers();
-  }, []);
-
-  const fetchSuppliers = async () => {
+const SupplierList = ({ suppliers, onEdit, onDelete }) => {
+  const handleUpdateState = async (id, newState) => {
     try {
-      const response = await getSuppliers();
-      setSuppliers(response.data);
+      await updateSupplierState(id, { state: newState });
+      await location.reload()
     } catch (error) {
-      console.error("Error fetching suppliers:", error);
-    }
-  };
-
-  const handleDelete = async (id) => {
-    try {
-      await deleteSupplierById(id);
-      fetchSuppliers(); 
-    } catch (error) {
-      console.error("Error deleting supplier:", error);
+      console.error("Error updating supplier state:", error);
     }
   };
 
@@ -33,9 +18,15 @@ const SupplierList = ({ onEdit }) => {
       <ul>
         {suppliers.map((supplier) => (
           <li key={supplier.id}>
-            {supplier.name} - {supplier.id_number}
+            {supplier.name} - {supplier.id_number} - Estado: {supplier.state}
             <button onClick={() => onEdit(supplier)}>Edit</button>
-            <button onClick={() => handleDelete(supplier.id)}>Delete</button>
+            <button onClick={() => onDelete(supplier.id)}>Delete</button>
+            {supplier.state === 'Pendiente de Validación' && (
+              <>
+                <button onClick={() => handleUpdateState(supplier.id, 'Aprobado')}>Aprobar</button>
+                <button onClick={() => handleUpdateState(supplier.id, 'Rechazado')}>Rechazar</button>
+              </>
+            )}
           </li>
         ))}
       </ul>
