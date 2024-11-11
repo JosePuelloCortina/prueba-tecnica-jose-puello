@@ -108,9 +108,9 @@ Este proyecto consiste en un backend en Node.js con Express y un frontend en Rea
      }
      ```
 
-2. Usar el EMAIL del usuario creado para crear un proveedor:
+2. Usar el ID del usuario creado para crear un proveedor:
 
-   - En la respuesta del endpoint anterior, toma el `email` del usuario y agrégalo en el campo `validated_by`.
+   - En la respuesta del endpoint anterior, toma el `id` del usuario y agrégalo en el campo `validated_by`.
    - **Endpoint**: `POST http://localhost:3000/proveedor/crear-nuevo-proveedor`
    - **JSON Body**:
      ```json
@@ -121,7 +121,7 @@ Este proyecto consiste en un backend en Node.js con Express y un frontend en Rea
        "id_number": "123456",
        "supplier_type": "Nacional",
        "person_type": "Natural",
-       "validated_by": "<EMAIL_DEL_USUARIO_ADMIN>",
+       "validated_by": "<ID_DEL_USUARIO_ADMIN>",
        "bank": "Bancolombia",
        "account_number": "3737373633",
        "account_type": "ahorros",
@@ -146,7 +146,7 @@ Para actualizar un proveedor existente:
     "supplier_type": "Nacional",
     "person_type": "Natural",
     "state": "Aprobado",
-    "validated_by": "<EMAIL_DEL_USUARIO_ADMIN>",
+    "validated_by": "<ID_DEL_USUARIO_ADMIN>",
     "bank": "Bancolombia",
     "account_number": "3737373633",
     "account_type": "ahorros",
