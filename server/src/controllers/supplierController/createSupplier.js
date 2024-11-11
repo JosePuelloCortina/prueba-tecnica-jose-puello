@@ -29,11 +29,11 @@ const createSupplier = async (req, res) => {
         });
 
         if (!validatingUser) {
-            return res.status(404).json({ error: "User not found" });
+            return res.status(409).json({ message: "User not found" });
         } 
 
         if (validatingUser.role !== 'admin') {
-            return res.status(403).json({ error: "Only an admin user can validate suppliers" });
+            return res.status(403).json({ message: "Only an admin user can validate suppliers" });
         }
 
         const newSupplier = {

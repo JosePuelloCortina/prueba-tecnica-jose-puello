@@ -9,7 +9,7 @@ const updateSupplier = async (req, res) => {
 
         const errorMessage = validateRequiredFields(req.body, ['nit', 'name', 'lastname', 'id_number', 'supplier_type', 'person_type', 'validated_by', 'bank', 'account_number', 'account_type', 'name_beneficiary', 'id_number_beneficiary']);
         if (errorMessage) {
-            return res.status(400).json({ error: `Error updating supplier: Bad request, ${errorMessage}` });
+            return res.status(400).json({ message: `Error updating supplier: Bad request, ${errorMessage}` });
         }
 
         const validatingUser = await User.findOne({
@@ -17,11 +17,11 @@ const updateSupplier = async (req, res) => {
         });
 
         if (!validatingUser) {
-            return res.status(404).json({ error: "User not found" });
+            return res.status(404).json({ message: "User not found" });
         }
 
         if (validatingUser.role !== 'admin') {
-            return res.status(403).json({ error: "Only an admin user can validate suppliers" });
+            return res.status(403).json({ message: "Only an admin user can validate suppliers" });
         }
 
         const existingSupplier = await Supplier.findOne({
@@ -29,7 +29,7 @@ const updateSupplier = async (req, res) => {
         });
 
         if (!existingSupplier) {
-            return res.status(404).json({ error: "Supplier not found" });
+            return res.status(404).json({ message: "Supplier not found" });
         }
 
         const duplicateSupplier = await Supplier.findOne({
@@ -68,7 +68,7 @@ const updateSupplier = async (req, res) => {
         });
 
         if (!existingBankingData) {
-            return res.status(404).json({ error: "Banking data not found for this supplier" });
+            return res.status(404).json({ message: "Banking data not found for this supplier" });
         }
 
         const existingBeneficiaryPartne = await BeneficiaryPartner.findOne({
@@ -76,7 +76,7 @@ const updateSupplier = async (req, res) => {
         })
 
         if (!existingBeneficiaryPartne) {
-            return res.status(404).json({ error: "Beneficiary Partner not found for this supplier" });
+            return res.status(404).json({ message: "Beneficiary Partner not found for this supplier" });
         }
 
         const updatedBankingData = await existingBankingData.update({

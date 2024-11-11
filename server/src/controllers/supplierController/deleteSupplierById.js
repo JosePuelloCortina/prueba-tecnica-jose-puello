@@ -13,7 +13,7 @@ const deleteSupplierById = async (req, res) => {
         });
 
         if (!supplier) {
-            return res.status(404).json({ error: "Supplier not found" });
+            return res.status(404).json({ message: "Supplier not found" });
         }
 
         await supplier.destroy();

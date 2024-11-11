@@ -29,6 +29,7 @@ const CreateSupplierForm = ({ onSave }) => {
     e.preventDefault();
     try {
       const response = await createSupplier(supplier);
+      console.log(response)
       alert(`Proveedor creado: ${response.data.name}`); 
       onSave(); 
     } catch (error) {

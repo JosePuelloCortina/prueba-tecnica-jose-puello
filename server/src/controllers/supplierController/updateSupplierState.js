@@ -6,7 +6,7 @@ const updateSupplierState = async (req, res) => {
         const { state } = req.body; 
 
         if (state !== 'Aprobado' && state !== 'Rechazado') {
-            return res.status(400).json({ error: "Invalid state. The state must be either 'Aprobado' or 'Rechazado'." });
+            return res.status(400).json({ message: "Invalid state. The state must be either 'Aprobado' or 'Rechazado'." });
         }
 
         const supplier = await Supplier.findOne({
@@ -14,7 +14,7 @@ const updateSupplierState = async (req, res) => {
         });
 
         if (!supplier) {
-            return res.status(404).json({ error: "Supplier not found" });
+            return res.status(404).json({ message: "Supplier not found" });
         }
 
         supplier.state = state;

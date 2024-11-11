@@ -8,7 +8,7 @@
 
         const errorMessage = validateRequiredFields(req.body, ['username', 'email', 'role', 'password']);
         if (errorMessage) {
-            return res.status(400).json({ error: `Error creating user: Bad request, ${errorMessage}` });
+            return res.status(400).json({ message: `Error creating user: Bad request, ${errorMessage}` });
         }
         const existingUser = await User.findOne({
             where: {email: email}
